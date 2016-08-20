@@ -1,0 +1,3 @@
+<%= javascript_include_tag "https://www.google.com/jsapi" %>
+
+<%= pie_chart Product.joins(:category).group("categories.name").pluck("categories.name, count(products.name)") %>
