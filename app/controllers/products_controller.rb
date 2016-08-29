@@ -1,6 +1,51 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  include PayPal::SDK::REST
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy]
 
+  def buy
+    # @product = Product.find(params[:id])
+    @payment = Payment.new({
+      :intent => "sale",
+      :payer => {
+      :payment_method => "paypal" },
+      # ###Redirect URLs
+      :redirect_urls => {
+      :return_url => success_products_url,
+      :cancel_url => cancel_products_url },
+      :transactions => [{
+      # Item List
+      :item_list => {
+      :items => [{
+      :name => @product.name,
+      :sku => "item",
+      :price => @product.price,
+      :currency => "USD",
+      :quantity => 1 }]},
+      :amount => {
+      :total => @product.price,
+      :currency => "USD" },
+      :description => "This is the payment transaction description." }]})
+    # Create Payment and return status
+    if @payment.create
+    # Redirect the user to given approval url
+      @redirect_url = @payment.links.find{|v| v.method == "REDIRECT" }.href
+      redirect_to @redirect_url
+    else
+    render json: @payment.error
+    end
+  end
+
+  def success
+    #code
+  end
+  def cancel
+    #code
+  end
+
+  def payments
+    payment_history = Payment.all( :count => 10 )
+    render json: payment_history.payments.to_json
+  end
   # GET /products
   # GET /products.json
   def index

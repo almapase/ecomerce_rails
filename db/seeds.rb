@@ -5,18 +5,19 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Order.destroy_all
 Product.destroy_all
 Category.destroy_all
 
 # AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
 
 c = Category.create(name: "Teléfono")
-p1 = Product.create(name: "Galaxy 6", stock: 10, category: c, created_at: (Time.now - 1.day))
-p2 = Product.create(name: "Galaxy 5", stock: 5, category: c, created_at: (Time.now - 3.day))
-p3 = Product.create(name: "Iphone 6", stock: 10, category: c, created_at: (Time.now - 5.day))
+p1 = Product.create(name: "Galaxy 6", price: 2345, stock: 10, category: c, created_at: (Time.now - 1.day))
+p2 = Product.create(name: "Galaxy 5", price: 2345, stock: 5, category: c, created_at: (Time.now - 3.day))
+p3 = Product.create(name: "Iphone 6", price: 2345, stock: 10, category: c, created_at: (Time.now - 5.day))
 
 c = Category.create(name: "Notebooks")
-p4 = Product.create(name: "Macbook Pro", stock: 20, category: c)
+p4 = Product.create(name: "Macbook Pro", price: 2345, stock: 20, category: c)
 
 u1 = User.create(email: "User 1", password: "12345678")
 u2 = User.create(email: "User 2", password: "12345678")
