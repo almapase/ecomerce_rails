@@ -1,20 +1,27 @@
 Rails.application.routes.draw do
+
+  root 'products#index'
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   devise_for :users
 
   resources :products do
     member do
-      get 'buy'
+      get 'add_to_cart'
     end
     collection do
-      get 'execute'
-      get 'payments'
-      get 'success'
+      get 'buy'
       get 'cancel'
-      get 'payments'
     end
   end
+
+  resources :payments do
+    collection do
+      get 'execute'
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
